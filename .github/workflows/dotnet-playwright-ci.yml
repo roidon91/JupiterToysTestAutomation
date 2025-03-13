@@ -54,9 +54,15 @@ jobs:
         test -f TestResults/${{ matrix.browser }}/TestResults.trx && echo "✅ TRX Report Found" || echo "❌ TRX Report NOT Found"
         test -f TestResults/${{ matrix.browser }}/TestResults.log && echo "✅ Log File Found" || echo "❌ Log File NOT Found"
 
-    # ✅ Debug Screenshot Path
-    - name: Debug Test Results Directory
-      run: ls -R TestResults/
+    # ✅ Debug Screenshot Path Before Upload
+    - name: Debug Screenshot Path Before Upload
+      run: |
+        echo "🔍 Checking if screenshots exist..."
+        ls -R TestResults/Screenshots/ || echo "❌ No screenshots found"
+
+    # ✅ Ensure Screenshots Directory Exists Before Uploading
+    - name: Ensure Screenshots Directory Exists
+      run: mkdir -p TestResults/Screenshots
 
     # ✅ Upload Test Logs
     - name: Upload Test Logs
@@ -76,17 +82,13 @@ jobs:
         path: TestResults/${{ matrix.browser }}/TestResults.trx
       continue-on-error: true
 
-    # ✅ Ensure Screenshots Directory Exists Before Uploading
-    - name: Ensure Screenshots Directory Exists
-      run: mkdir -p TestResults/${{ matrix.browser }}/Screenshots
-
     # ✅ Upload Screenshots as Artifacts
     - name: Upload Screenshots
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: Playwright-Screenshots-${{ matrix.browser }}
-        path: TestResults/${{ matrix.browser }}/Screenshots/
+        name: Playwright-Screenshots
+        path: "TestResults/Screenshots/*.png"
         if-no-files-found: warn
       continue-on-error: true
 
