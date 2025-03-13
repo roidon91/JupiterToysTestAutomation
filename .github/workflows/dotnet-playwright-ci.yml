@@ -27,29 +27,25 @@ jobs:
       run: echo "DRIVER_TYPE=${{ matrix.browser }}" >> $GITHUB_ENV
 
     - name: Restore dependencies
-      run: dotnet restore JupiterToysTestAutomation/JupiterToysAppTest.sln
-      working-directory: src
+      run: dotnet restore JupiterToysAppTest.sln
 
     - name: Build
-      run: dotnet build JupiterToysTestAutomation/JupiterToysAppTest.sln --no-restore
-      working-directory: src
+      run: dotnet build JupiterToysAppTest.sln --no-restore
 
     - name: Install PowerShell DevOps Module
       uses: powershell-devops/powershell-devops@v0.2.0
 
     - name: Ensure Browsers Are Installed
-      run: pwsh JupiterToysTestAutomation/JupiterToysAppTest/bin/Debug/net8.0/playwright.ps1 install --with-deps
-      working-directory: src
+      run: pwsh JupiterToysAppTest/bin/Debug/net8.0/playwright.ps1 install --with-deps
 
     # ✅ Create Directories for Test Results and Screenshots
     - name: Create Test Results and Screenshots Directory
-      run: mkdir -p src/TestResults/${{ matrix.browser }}/Screenshots
+      run: mkdir -p TestResults/${{ matrix.browser }}/Screenshots
 
     - name: Run Tests on ${{ matrix.browser }}
       run: |
-        dotnet test JupiterToysTestAutomation/JupiterToysAppTest.sln --no-build --verbosity normal \
+        dotnet test JupiterToysAppTest.sln --no-build --verbosity normal \
           --logger "trx;LogFileName=TestResults/${{ matrix.browser }}/TestResults.trx" | tee TestResults/${{ matrix.browser }}/TestResults.log
-      working-directory: src
 
     - name: Verify Test Report Files
       run: |
@@ -57,7 +53,6 @@ jobs:
         ls -l TestResults/${{ matrix.browser }}/
         test -f TestResults/${{ matrix.browser }}/TestResults.trx && echo "✅ TRX Report Found" || echo "❌ TRX Report NOT Found"
         test -f TestResults/${{ matrix.browser }}/TestResults.log && echo "✅ Log File Found" || echo "❌ Log File NOT Found"
-      working-directory: src
 
     # ✅ Upload Test Logs
     - name: Upload Test Logs
@@ -65,7 +60,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Test-Logs-${{ matrix.browser }}
-        path: src/TestResults/${{ matrix.browser }}/TestResults.log
+        path: TestResults/${{ matrix.browser }}/TestResults.log
       continue-on-error: true
 
     # ✅ Upload TRX Test Report
@@ -74,7 +69,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: TRX-Test-Report-${{ matrix.browser }}
-        path: src/TestResults/${{ matrix.browser }}/TestResults.trx
+        path: TestResults/${{ matrix.browser }}/TestResults.trx
       continue-on-error: true
 
     # ✅ Upload Screenshots as Artifacts
@@ -83,7 +78,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Playwright-Screenshots-${{ matrix.browser }}
-        path: src/TestResults/${{ matrix.browser }}/Screenshots/
+        path: TestResults/${{ matrix.browser }}/Screenshots/
       continue-on-error: true
 
     - name: Generate Summary Report
@@ -94,13 +89,12 @@ jobs:
         echo "\`\`\`" >> summary-${{ matrix.browser }}.md
         tail -n 20 TestResults/${{ matrix.browser }}/TestResults.log >> summary-${{ matrix.browser }}.md
         echo "\`\`\`" >> summary-${{ matrix.browser }}.md
-      working-directory: src
 
     - name: Add Summary to GitHub Actions
       if: always()
       run: |
-        if [ -f src/summary-${{ matrix.browser }}.md ]; then
-          cat src/summary-${{ matrix.browser }}.md >> $GITHUB_STEP_SUMMARY
+        if [ -f summary-${{ matrix.browser }}.md ]; then
+          cat summary-${{ matrix.browser }}.md >> $GITHUB_STEP_SUMMARY
         else
           echo "No summary file found for ${{ matrix.browser }}" >> $GITHUB_STEP_SUMMARY
         fi
