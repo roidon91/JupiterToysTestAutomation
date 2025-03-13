@@ -54,6 +54,10 @@ jobs:
         test -f TestResults/${{ matrix.browser }}/TestResults.trx && echo "✅ TRX Report Found" || echo "❌ TRX Report NOT Found"
         test -f TestResults/${{ matrix.browser }}/TestResults.log && echo "✅ Log File Found" || echo "❌ Log File NOT Found"
 
+    # ✅ Debug Screenshot Path
+    - name: Debug Test Results Directory
+      run: ls -R TestResults/
+
     # ✅ Upload Test Logs
     - name: Upload Test Logs
       if: always()
@@ -72,6 +76,10 @@ jobs:
         path: TestResults/${{ matrix.browser }}/TestResults.trx
       continue-on-error: true
 
+    # ✅ Ensure Screenshots Directory Exists Before Uploading
+    - name: Ensure Screenshots Directory Exists
+      run: mkdir -p TestResults/${{ matrix.browser }}/Screenshots
+
     # ✅ Upload Screenshots as Artifacts
     - name: Upload Screenshots
       if: always()
@@ -79,6 +87,7 @@ jobs:
       with:
         name: Playwright-Screenshots-${{ matrix.browser }}
         path: TestResults/${{ matrix.browser }}/Screenshots/
+        if-no-files-found: warn
       continue-on-error: true
 
     - name: Generate Summary Report
