@@ -75,5 +75,3 @@ This project is configured to run tests using **GitHub Actions**. Every push or 
 **Roidon Rodrigues**  
 GitHub: [@roidon91](https://github.com/roidon91)
 
-## License
-This project is licensed under the MIT License.
