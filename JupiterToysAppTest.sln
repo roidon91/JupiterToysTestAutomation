@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JupiterToysAppTest", "JupiterToysAppTest\JupiterToysAppTest.csproj", "{75847B13-21C1-486F-9EF9-4B9180AAFD48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JupiterToysTestFramework", "JupiterToysTestFramework\JupiterToysTestFramework.csproj", "{A01B1400-D4A6-401D-B5B4-FB60768AB69A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75847B13-21C1-486F-9EF9-4B9180AAFD48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75847B13-21C1-486F-9EF9-4B9180AAFD48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75847B13-21C1-486F-9EF9-4B9180AAFD48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75847B13-21C1-486F-9EF9-4B9180AAFD48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A01B1400-D4A6-401D-B5B4-FB60768AB69A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A01B1400-D4A6-401D-B5B4-FB60768AB69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A01B1400-D4A6-401D-B5B4-FB60768AB69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A01B1400-D4A6-401D-B5B4-FB60768AB69A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
